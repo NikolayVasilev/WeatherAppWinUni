@@ -12,6 +12,8 @@
     xmlns:data="using:WeatherWizz.Data"
     mc:Ignorable="d">
 
+    
+    
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,26 +22,22 @@
 
         <localNavigation:MainHeader/>
 
-        <Hub x:Name="MainHub" x:Uid="Hub" Grid.Row="1">
-            <HubSection Header="Now">
+        <Pivot x:Name="MainHub" x:Uid="Hub" Grid.Row="1" Margin="0, -10, 0, 0">
+            <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0.5*"/>
-                            <RowDefinition Height="0.5*"/>
-                        </Grid.RowDefinitions>
-                        
-                        <localViews:WeatherInformationNowView />
-                        
-                    </Grid>
+                    <TextBlock Text="{Binding}" FontSize="30" />
                 </DataTemplate>
-            </HubSection>
-            <HubSection Header="Hourly">
+            </Pivot.HeaderTemplate>
 
-            </HubSection>
-            <HubSection Header="Forecast">
+            <PivotItem Header="Now">
+                    <localViews:WeatherInformationNowScreenView/>
+            </PivotItem>
+            <PivotItem Header="Hourly">
+                <localViews:HourlyView/>
+            </PivotItem>
+            <PivotItem Header="Forecast">
 
-            </HubSection>
-        </Hub>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </Page>

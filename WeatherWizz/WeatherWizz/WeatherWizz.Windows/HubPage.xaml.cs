@@ -77,7 +77,7 @@ namespace WeatherWizz
         {
             HubSection section = e.Section;
             var group = section.DataContext;
-            this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
+            //this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace WeatherWizz
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
             var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            this.Frame.Navigate(typeof(ItemPage), itemId);
+            //this.Frame.Navigate(typeof(ItemPage), itemId);
         }
         #region NavigationHelper registration
 

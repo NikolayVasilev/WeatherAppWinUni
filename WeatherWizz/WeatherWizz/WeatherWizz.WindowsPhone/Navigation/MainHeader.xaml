@@ -17,10 +17,15 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding CurrentCity}" 
+        <!--<TextBlock Text="{Binding CurrentCity}" 
                    FontSize="50" 
                    VerticalAlignment="Center" 
-                   />
+                   />-->
+        
+        <ComboBox SelectedItem="{Binding CurrentCity}"
+                  FontSize="50"
+                  Margin="20, 0, 0, 0"
+                  />
 
         <AppBarButton Click="AddButtonClick" 
                       Icon="Add"
