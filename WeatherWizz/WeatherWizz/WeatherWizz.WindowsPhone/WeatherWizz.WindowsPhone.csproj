@@ -86,7 +86,13 @@
     <Compile Include="Navigation\MainHeader.xaml.cs">
       <DependentUpon>MainHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Navigation\SearchHeader.xaml.cs">
+      <DependentUpon>SearchHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\ForecastView.xaml.cs">
+      <DependentUpon>ForecastView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HourlyView.xaml.cs">
       <DependentUpon>HourlyView.xaml</DependentUpon>
     </Compile>
@@ -122,6 +128,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Navigation\MainHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Navigation\SearchHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ForecastView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

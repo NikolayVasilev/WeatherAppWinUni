@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using WeatherWizz.DataModel;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -38,35 +39,12 @@ namespace WeatherWizz
         {
             this.InitializeComponent();
 
-            // Hub is only supported in Portrait orientation
-
-            //DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait |
-            //                                             DisplayOrientations.LandscapeFlipped |
-            //                                             DisplayOrientations.Landscape;
-
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.None;
-
             this.NavigationCacheMode = NavigationCacheMode.Required;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            Window.Current.SizeChanged += Current_SizeChanged;
-        }
-
-        void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e)
-        {
-            var bounds = Window.Current.Bounds;
-
-            if (bounds.Width > bounds.Height)
-            {
-                VisualStateManager.GoToState(this, "LandScape", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "Portrait", true);
-            }
         }
 
         /// <summary>
@@ -108,6 +86,11 @@ namespace WeatherWizz
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             //var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
             //this.DefaultViewModel["Groups"] = sampleDataGroups;
+
+            var sampleData = await WeatherDataServiceConsumer.GetWeatherInformation("Sofia");
+            this.DefaultViewModel["WeatherViewModel"] = sampleData;
+
+            this.DataContext = this.DefaultViewModel["WeatherViewModel"];
         }
 
         /// <summary>
@@ -120,7 +103,6 @@ namespace WeatherWizz
         /// serializable state.</param>
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            // TODO: Save the unique state of the page here.
         }
 
         #region NavigationHelper registration

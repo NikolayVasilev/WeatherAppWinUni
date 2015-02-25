@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Storage;
@@ -120,7 +122,21 @@ namespace WeatherWizz.Data
             if (this._groups.Count != 0)
                 return;
 
-            Uri dataUri = new Uri("ms-appx:///DataModel/SampleData.json");
+            //Uri dataUri = new Uri("ms-appx:///DataModel/SampleData.json");
+            Uri dataUri = new Uri("http://api.openweathermap.org/data/2.5/forecast?q=Sofia,us&mode=json");
+
+            string queryString = "http://api.openweathermap.org/data/2.5/forecast?q=Sofia,us&mode=json";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(queryString);
+
+            //request.Credentials = new NetworkCredential("<Your account key goes here>",
+            //                    "<Your account key goes here>");
+
+            var response = await request.GetResponseAsync().ConfigureAwait(false);
+            var stream = response.GetResponseStream();
+
+            var streamReader = new StreamReader(stream);
+            string responseText = streamReader.ReadToEnd();
 
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
             string jsonText = await FileIO.ReadTextAsync(file);

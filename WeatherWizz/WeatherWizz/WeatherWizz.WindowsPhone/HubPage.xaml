@@ -8,7 +8,6 @@
     xmlns:localNavigation="using:WeatherWizz.Navigation"
     xmlns:localViews="using:WeatherWizz.Views"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
-    d:DataContext="{Binding Source={d:DesignData Source=../WeatherWizz.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}"
     xmlns:data="using:WeatherWizz.Data"
     mc:Ignorable="d">
 
@@ -30,13 +29,13 @@
             </Pivot.HeaderTemplate>
 
             <PivotItem Header="Now">
-                    <localViews:WeatherInformationNowScreenView/>
+                    <localViews:WeatherInformationNowScreenView DataContext="{Binding}"/>
             </PivotItem>
             <PivotItem Header="Hourly">
                 <localViews:HourlyView/>
             </PivotItem>
             <PivotItem Header="Forecast">
-
+                <localViews:ForecastView/>
             </PivotItem>
         </Pivot>
     </Grid>
