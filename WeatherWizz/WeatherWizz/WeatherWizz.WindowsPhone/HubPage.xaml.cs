@@ -87,10 +87,11 @@ namespace WeatherWizz
             //var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
             //this.DefaultViewModel["Groups"] = sampleDataGroups;
 
-            var sampleData = await WeatherDataServiceConsumer.GetWeatherInformation("Sofia");
-            this.DefaultViewModel["WeatherViewModel"] = sampleData;
+            var weatherViewModel = await WeatherDataServiceConsumer.GetWeatherInformation(App.ApplicationViewModel.SelectedLocation);
+            App.ApplicationViewModel.CurrentWeatherInfo = weatherViewModel;
+            this.DefaultViewModel["ApplicationViewModel"] = App.ApplicationViewModel;
 
-            this.DataContext = this.DefaultViewModel["WeatherViewModel"];
+            this.DataContext = this.DefaultViewModel["ApplicationViewModel"];
         }
 
         /// <summary>

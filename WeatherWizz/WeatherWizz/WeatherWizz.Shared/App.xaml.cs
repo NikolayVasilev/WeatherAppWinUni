@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using WeatherWizz.Common;
+using Windows.Storage;
+using WeatherWizz.DataModel;
+using System.Collections.ObjectModel;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -30,6 +33,9 @@ namespace WeatherWizz
         private TransitionCollection transitions;
 #endif
 
+        public static ApplicationViewModel ApplicationViewModel
+        { get; private set; }
+
         /// <summary>
         /// Initializes the singleton instance of the <see cref="App"/> class. This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -38,6 +44,9 @@ namespace WeatherWizz
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+
+
+            this.EnsureSettings();
         }
 
         /// <summary>
@@ -114,8 +123,44 @@ namespace WeatherWizz
                 }
             }
 
+
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        private void EnsureSettings()
+        {
+            if (ApplicationData.Current.LocalSettings.Values["SavedCities"] == null)
+            {
+                List<string> defaultCities = WeatherDataServiceConsumer.GetDefaultCities();
+
+#if WINDOWS_PHONE_APP
+                defaultCities.Insert(0, "CurrentLocation");
+#endif
+
+                ApplicationData.Current.LocalSettings.Values["SavedCities"] = defaultCities.ToArray();
+            }
+
+            if (ApplicationData.Current.LocalSettings.Values["Units"] == null)
+            {
+                ApplicationData.Current.LocalSettings.Values["Units"] = "Metric";
+            }
+
+            if (ApplicationData.Current.LocalSettings.Values["SelectedLocation"] == null)
+            {
+#if WINDOWS_PHONE_APP
+                ApplicationData.Current.LocalSettings.Values["SelectedLocation"] = "CurrentLocation";
+#else
+                ApplicationData.Current.LocalSettings.Values["SelectedLocation"] = "Sofia";
+#endif
+            }
+
+            ApplicationViewModel = new ApplicationViewModel();
+            ApplicationViewModel.SavedCities = new ObservableCollection<string>(ApplicationData.Current.LocalSettings.Values["SavedCities"] as string[]);
+            ApplicationViewModel.MeasurementUnits = ApplicationData.Current.LocalSettings.Values["Units"] == "Metric" ?
+                MeasurementUnits.Metric : MeasurementUnits.Imperial;
+
+            ApplicationViewModel.SelectedLocation = (string)ApplicationData.Current.LocalSettings.Values["SelectedLocation"];
         }
 
 #if WINDOWS_PHONE_APP

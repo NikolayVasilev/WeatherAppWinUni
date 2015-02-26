@@ -6,37 +6,54 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:telerik="using:Telerik.UI.Xaml.Controls.Chart"
+    xmlns:common="using:WeatherWizz.Common"
     mc:Ignorable="d"
     d:DesignHeight="700"
     d:DesignWidth="400">
-    
-    <UserControl.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
 
-            <DataTemplate x:Key="ListViewItemTemplate">
-            <Grid>
+    <UserControl.Resources>
+        <common:DateTimeToHoursConverter x:Key="TimeConverter"/>
+        <common:DoubleToTemperatureConverter x:Key="TepmeratureConverter"/>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="ListViewItemTemplate">
+            <Grid Width="{Binding ActualWidth, ElementName=HourlyTemperatureChart}">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="0.45*"/>
+                    <RowDefinition Height="0.45*"/>
+                    <RowDefinition Height="0.1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.75*"/>
                     <ColumnDefinition Width="0.25*"/>
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock Text="{Binding Hour}"/>
+
+                <TextBlock Text="{Binding Time, Converter={StaticResource TimeConverter}}" 
+                           Foreground="Silver" 
+                           />
                 <TextBlock Text="{Binding WeatherState}" 
-                           Grid.Row="1"/>
-                
-                <TextBlock Text="{Binding Temperature}" 
+                           Grid.Row="1"
+                           />
+
+                <TextBlock Text="{Binding CurrentTemperature, Converter={StaticResource TepmeratureConverter}}" 
                            Grid.Column="1"
-                           Grid.RowSpan="2"/>
+                           Grid.RowSpan="2"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                
+                <Border Height="1" 
+                        Width="Auto" 
+                        Background="Silver" 
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2"/>
             </Grid>
         </DataTemplate>
+
+
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*"/>
@@ -49,29 +66,44 @@
         </Grid.ColumnDefinitions>
 
         <telerik:RadCartesianChart x:Name="HourlyTemperatureChart"
-                                   Grid.ColumnSpan="2">
+                                   Grid.ColumnSpan="2"
+                                   >
+            <telerik:RadCartesianChart.Grid>
+                <telerik:CartesianChartGrid MajorLinesVisibility="Y"/>
+            </telerik:RadCartesianChart.Grid>
             <telerik:RadCartesianChart.VerticalAxis>
                 <telerik:LinearAxis/>
             </telerik:RadCartesianChart.VerticalAxis>
             <telerik:RadCartesianChart.HorizontalAxis>
-                <telerik:CategoricalAxis/>
+                <telerik:DateTimeCategoricalAxis>
+                    <telerik:DateTimeCategoricalAxis.LabelTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource TimeConverter}}"/>
+                        </DataTemplate>
+                    </telerik:DateTimeCategoricalAxis.LabelTemplate>
+                </telerik:DateTimeCategoricalAxis>
             </telerik:RadCartesianChart.HorizontalAxis>
-            <telerik:LineSeries ItemsSource="{Binding}">
-                <telerik:LineSeries.CategoryBinding>
+            <telerik:AreaSeries ItemsSource="{Binding DailyWeatherDetails}">
+                <telerik:AreaSeries.CategoryBinding>
                     <telerik:PropertyNameDataPointBinding PropertyName="Time"/>
-                </telerik:LineSeries.CategoryBinding>
-                <telerik:LineSeries.ValueBinding>
-                    <telerik:PropertyNameDataPointBinding PropertyName="Temperature"/>
-                </telerik:LineSeries.ValueBinding>
-            </telerik:LineSeries>
+                </telerik:AreaSeries.CategoryBinding>
+                <telerik:AreaSeries.ValueBinding>
+                    <telerik:PropertyNameDataPointBinding PropertyName="CurrentTemperature"/>
+                </telerik:AreaSeries.ValueBinding>
+            </telerik:AreaSeries>
         </telerik:RadCartesianChart>
 
         <ListView x:Name="DetailsListView"
-                  ItemsSource="{Binding HourlyTemperatures}"
+                  ItemsSource="{Binding DailyWeatherDetails}"
                   ItemTemplate="{StaticResource ListViewItemTemplate}"
+                  CanReorderItems="False"
+                  SelectionMode="None"
                   Grid.Row="1"
-                  Grid.ColumnSpan="2">
-
+                  Grid.ColumnSpan="2"
+                  Width="Auto">
+            <ListView.Header>
+                    <TextBlock Text="Hourly forecast 24h" FontSize="15"/>
+            </ListView.Header>
         </ListView>
     </Grid>
 </UserControl>

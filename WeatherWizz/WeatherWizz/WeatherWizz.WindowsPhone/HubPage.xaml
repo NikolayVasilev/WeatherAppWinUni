@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <localNavigation:MainHeader/>
+        <localNavigation:MainHeader DataContext="{Binding}"/>
 
         <Pivot x:Name="MainHub" x:Uid="Hub" Grid.Row="1" Margin="0, -10, 0, 0">
             <Pivot.HeaderTemplate>
@@ -29,10 +29,10 @@
             </Pivot.HeaderTemplate>
 
             <PivotItem Header="Now">
-                    <localViews:WeatherInformationNowScreenView DataContext="{Binding}"/>
+                <localViews:WeatherInformationNowScreenView DataContext="{Binding CurrentWeatherInfo}"/>
             </PivotItem>
             <PivotItem Header="Hourly">
-                <localViews:HourlyView/>
+                <localViews:HourlyView DataContext="{Binding CurrentWeatherInfo}"/>
             </PivotItem>
             <PivotItem Header="Forecast">
                 <localViews:ForecastView/>

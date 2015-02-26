@@ -15,11 +15,33 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Common\DoubleToTemperatureConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\WeatherDetailsInfoViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\WeatherInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\DateTimeToHoursConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\DoubleToTemperatureConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\WeatherStateToIConPathConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\MeasurementUnits.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ViewModels\WeatherDetailsInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ViewModels\WeatherInfoViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\WeatherDataServiceConsumer.cs" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\brokenclouds.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\clearsky.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\fewclouds.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\mist.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\rain.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\scatteredclouds.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\showerrain.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\snow.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons128p\thunderstorm.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\brokenclouds.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\clearsky.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\fewclouds.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\mist.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\rain.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\scatteredclouds.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\showerain.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\snow.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\weathericons512p\thunderstorm.png" />
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />

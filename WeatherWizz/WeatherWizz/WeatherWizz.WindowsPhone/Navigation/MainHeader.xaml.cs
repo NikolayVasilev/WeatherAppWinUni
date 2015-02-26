@@ -36,5 +36,10 @@ namespace WeatherWizz.Navigation
         private void Button_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            App.ApplicationViewModel.SelectedLocation = (string)e.AddedItems.FirstOrDefault();
+        }
     }
 }
