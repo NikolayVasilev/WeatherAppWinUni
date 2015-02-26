@@ -60,27 +60,37 @@ namespace WeatherWizz.DataModel
             var streamReader = new StreamReader(stream);
             string responseText = streamReader.ReadToEnd();
 
-            XDocument xDoc = XDocument.Parse(responseText);
+            XDocument xDocDailyForecast = XDocument.Parse(responseText);
 
             var weatherInfo = new WeatherInfoViewModel();
 
-            weatherInfo.CityName = xDoc.Root.Element("location").Element("name").Value;
-            weatherInfo.CountryName = xDoc.Root.Element("location").Element("country").Value;
+            weatherInfo.CityName = xDocDailyForecast.Root.Element("location").Element("name").Value;
+            weatherInfo.CountryName = xDocDailyForecast.Root.Element("location").Element("country").Value;
 
             DateTime cleanDate;
-            string dateString = xDoc.Root.Element("sun").Attribute("rise").Value;
+            string dateString = xDocDailyForecast.Root.Element("sun").Attribute("rise").Value;
             DateTime.TryParseExact(dateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out cleanDate);
 
             weatherInfo.Sunrise = cleanDate.ToLocalTime();
 
-            dateString = xDoc.Root.Element("sun").Attribute("set").Value;
+            dateString = xDocDailyForecast.Root.Element("sun").Attribute("set").Value;
             DateTime.TryParseExact(dateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out cleanDate);
 
             weatherInfo.Sunset = cleanDate.ToLocalTime();
 
-            ParseDaylyForecast(xDoc, weatherInfo);
+            ParseDaylyForecast(xDocDailyForecast, weatherInfo);
 
+            HttpWebRequest weeklyRequest = (HttpWebRequest)WebRequest.Create(weeklyForecastString);
 
+            response = await weeklyRequest.GetResponseAsync().ConfigureAwait(false);
+            stream = response.GetResponseStream();
+
+            streamReader = new StreamReader(stream);
+            responseText = streamReader.ReadToEnd();
+
+            XDocument xDocWeeklyForecast = XDocument.Parse(responseText);
+
+            ParseWeeklyForecast(xDocWeeklyForecast, weatherInfo);
 
             lastUpdate = DateTime.Now;
             currentLocationName = locationName;
@@ -98,7 +108,7 @@ namespace WeatherWizz.DataModel
                 var weatherDetails = new WeatherDetailsInfoViewModel();
                 DateTime cleanDate;
 
-                string dateString = node.Attribute("date").Value;
+                string dateString = node.Attribute("day").Value;
                 DateTime.TryParseExact(dateString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out cleanDate);
 
                 weatherDetails.Time = cleanDate.ToLocalTime();

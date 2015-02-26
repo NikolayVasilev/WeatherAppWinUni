@@ -35,7 +35,7 @@
                 <localViews:HourlyView DataContext="{Binding CurrentWeatherInfo}"/>
             </PivotItem>
             <PivotItem Header="Forecast">
-                <localViews:ForecastView/>
+                <localViews:ForecastView DataContext="{Binding CurrentWeatherInfo}"/>
             </PivotItem>
         </Pivot>
     </Grid>

@@ -12,30 +12,46 @@
     d:DesignWidth="400">
 
     <UserControl.Resources>
+        <common:DateTimeToDayConverter x:Key="TimeConverter"/>
+        <common:WeatherInfoDetailsToMinMaxTemperatureConverter x:Key="TemperatureConverter"/>
+
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
         <DataTemplate x:Key="ListViewItemTemplate">
-            <Grid>
+            <Grid Width="{Binding ActualWidth, ElementName=WeeklyTemperatureChart}">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="0.45*"/>
+                    <RowDefinition Height="0.45*"/>
+                    <RowDefinition Height="0.1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.75*"/>
                     <ColumnDefinition Width="0.25*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{Binding Day}"/>
+                <TextBlock Text="{Binding Time, Converter={StaticResource TimeConverter}}" 
+                           Foreground="Silver" 
+                           />
                 <TextBlock Text="{Binding WeatherState}" 
-                           Grid.Row="1"/>
+                           Grid.Row="1"
+                           />
 
-                <TextBlock Text="{Binding TemperatureMinMax}" 
+                <TextBlock Text="{Binding Converter={StaticResource TemperatureConverter}}" 
                            Grid.Column="1"
-                           Grid.RowSpan="2"/>
+                           Grid.RowSpan="2"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                <Border Height="1" 
+                        Width="Auto" 
+                        Background="Silver" 
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2"/>
             </Grid>
         </DataTemplate>
+
+
     </UserControl.Resources>
 
     <Grid>
@@ -50,29 +66,53 @@
         </Grid.ColumnDefinitions>
 
         <telerik:RadCartesianChart x:Name="WeeklyTemperatureChart"
-                                   Grid.ColumnSpan="2">
+                                   Grid.ColumnSpan="2"
+                                   >
+            <telerik:RadCartesianChart.Grid>
+                <telerik:CartesianChartGrid MajorLinesVisibility="Y"/>
+            </telerik:RadCartesianChart.Grid>
             <telerik:RadCartesianChart.VerticalAxis>
                 <telerik:LinearAxis/>
             </telerik:RadCartesianChart.VerticalAxis>
             <telerik:RadCartesianChart.HorizontalAxis>
-                <telerik:CategoricalAxis/>
+                <telerik:DateTimeCategoricalAxis>
+                    <telerik:DateTimeCategoricalAxis.LabelTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource TimeConverter}}"/>
+                        </DataTemplate>
+                    </telerik:DateTimeCategoricalAxis.LabelTemplate>
+                </telerik:DateTimeCategoricalAxis>
             </telerik:RadCartesianChart.HorizontalAxis>
-            <telerik:LineSeries ItemsSource="{Binding}">
+            <telerik:LineSeries ItemsSource="{Binding WeeklyTermWeatherDetails}">
                 <telerik:LineSeries.CategoryBinding>
-                    <telerik:PropertyNameDataPointBinding PropertyName="Day"/>
+                    <telerik:PropertyNameDataPointBinding PropertyName="Time"/>
                 </telerik:LineSeries.CategoryBinding>
                 <telerik:LineSeries.ValueBinding>
-                    <telerik:PropertyNameDataPointBinding PropertyName="Temperature"/>
+                    <telerik:PropertyNameDataPointBinding PropertyName="MaximalTemperature"/>
+                </telerik:LineSeries.ValueBinding>
+            </telerik:LineSeries>
+
+            <telerik:LineSeries ItemsSource="{Binding WeeklyTermWeatherDetails}">
+                <telerik:LineSeries.CategoryBinding>
+                    <telerik:PropertyNameDataPointBinding PropertyName="Time"/>
+                </telerik:LineSeries.CategoryBinding>
+                <telerik:LineSeries.ValueBinding>
+                    <telerik:PropertyNameDataPointBinding PropertyName="MinimalTemperature"/>
                 </telerik:LineSeries.ValueBinding>
             </telerik:LineSeries>
         </telerik:RadCartesianChart>
 
         <ListView x:Name="DetailsListView"
-                  ItemsSource="{Binding DaylyTemperatures}"
+                  ItemsSource="{Binding WeeklyTermWeatherDetails}"
                   ItemTemplate="{StaticResource ListViewItemTemplate}"
+                  CanReorderItems="False"
+                  SelectionMode="None"
                   Grid.Row="1"
-                  Grid.ColumnSpan="2">
-
+                  Grid.ColumnSpan="2"
+                  Width="Auto">
+            <ListView.Header>
+                <TextBlock Text="Weekly forecast" FontSize="15"/>
+            </ListView.Header>
         </ListView>
     </Grid>
 </UserControl>

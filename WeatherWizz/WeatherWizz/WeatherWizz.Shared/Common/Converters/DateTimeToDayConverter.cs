@@ -5,17 +5,18 @@ using Windows.UI.Xaml.Data;
 
 namespace WeatherWizz.Common
 {
-    public class DoubleToTemperatureConverter : IValueConverter
+    public class DateTimeToDayConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return string.Format("{0:0.0}°{1}", Math.Round((double)value, 2), 
-                App.ApplicationViewModel.MeasurementUnits == MeasurementUnits.Metric ? "C" : "F");
+            var dateTime = (DateTime)value;
+
+            return dateTime.DayOfWeek.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            return value;
+            throw new NotImplementedException();
         }
     }
 }

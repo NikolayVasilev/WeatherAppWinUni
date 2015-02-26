@@ -157,7 +157,7 @@ namespace WeatherWizz
 
             ApplicationViewModel = new ApplicationViewModel();
             ApplicationViewModel.SavedCities = new ObservableCollection<string>(ApplicationData.Current.LocalSettings.Values["SavedCities"] as string[]);
-            ApplicationViewModel.MeasurementUnits = ApplicationData.Current.LocalSettings.Values["Units"] == "Metric" ?
+            ApplicationViewModel.MeasurementUnits = ApplicationData.Current.LocalSettings.Values["Units"].Equals("Metric") ?
                 MeasurementUnits.Metric : MeasurementUnits.Imperial;
 
             ApplicationViewModel.SelectedLocation = (string)ApplicationData.Current.LocalSettings.Values["SelectedLocation"];

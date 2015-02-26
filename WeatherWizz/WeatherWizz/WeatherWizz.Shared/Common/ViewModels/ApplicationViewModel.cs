@@ -21,7 +21,7 @@ namespace WeatherWizz.Common
         {
             get
             {
-                return this.selectedLocation;
+                return this.CurrentWeatherInfo != null ? this.CurrentWeatherInfo.CityName : this.selectedLocation;
             }
             set
             {
@@ -65,7 +65,6 @@ namespace WeatherWizz.Common
                 {
                     var weatherinfo = await WeatherDataServiceConsumer.GetWeatherInformation(this.SelectedLocation, true);
                     this.CurrentWeatherInfo = weatherinfo;
-                    this.SelectedLocation = weatherinfo.CityName;
                 });
             }
         }

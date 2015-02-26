@@ -15,8 +15,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\DateTimeToDayConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\DateTimeToHoursConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\DoubleToTemperatureConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\WeatherInfoDetailsToMinMaxTemperatureConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\WeatherStateToIConPathConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\MeasurementUnits.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ViewModels\ApplicationViewModel.cs" />
