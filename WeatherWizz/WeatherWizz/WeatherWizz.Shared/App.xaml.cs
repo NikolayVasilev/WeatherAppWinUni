@@ -19,6 +19,8 @@ using WeatherWizz.Common;
 using Windows.Storage;
 using WeatherWizz.DataModel;
 using System.Collections.ObjectModel;
+using System.Net;
+using Windows.UI.Popups;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -46,6 +48,22 @@ namespace WeatherWizz
             this.Suspending += this.OnSuspending;
 
             this.EnsureSettings();
+
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            this.HandleException(e);
+        }
+
+        private async void HandleException(UnhandledExceptionEventArgs e)
+        {
+            if(e.Exception is WebException)
+            {
+                MessageDialog dialog = new MessageDialog("Service unavailable", "Error");
+                await dialog.ShowAsync();
+            }
         }
 
         /// <summary>

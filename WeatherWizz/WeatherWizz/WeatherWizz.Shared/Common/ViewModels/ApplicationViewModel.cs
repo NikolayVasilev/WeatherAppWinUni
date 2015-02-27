@@ -8,6 +8,8 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Linq;
+using System.Net;
+using Windows.UI.Popups;
 
 namespace WeatherWizz.Common
 {
@@ -34,11 +36,11 @@ namespace WeatherWizz.Common
 
         public bool IsBusy
         {
-            get 
-            { 
-                return isBusy; 
+            get
+            {
+                return isBusy;
             }
-            set 
+            set
             {
                 if (isBusy != value)
                 {
@@ -117,8 +119,17 @@ namespace WeatherWizz.Common
                 await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, async () =>
                 {
                     IsBusy = true;
-                    var weatherinfo = await WeatherDataServiceConsumer.GetWeatherInformation(this.selectedLocation, forceRefresh);
-                    this.CurrentWeatherInfo = weatherinfo;
+                    try
+                    {
+                        var weatherinfo = await WeatherDataServiceConsumer.GetWeatherInformation(this.selectedLocation, forceRefresh);
+                        this.CurrentWeatherInfo = weatherinfo;
+                    }
+                    catch
+                    {
+                        MessageDialog dialog = new MessageDialog("Service unavailable", "Error");
+                        dialog.ShowAsync();
+                    }
+
                 });
             }
         }

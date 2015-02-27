@@ -7,11 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:localNavigation="using:WeatherWizz.Navigation"
     xmlns:localViews="using:WeatherWizz.Views"
+    xmlns:localConverters="using:WeatherWizz.Common.Converters"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns:data="using:WeatherWizz.Data"
     mc:Ignorable="d">
 
-    
+    <Page.Resources>
+        <localConverters:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+    </Page.Resources>
     
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -21,6 +24,19 @@
 
         <localNavigation:MainHeader DataContext="{Binding}"/>
 
+        <Rectangle Fill="#FFFFFF" Height="50"
+                   Width="Auto"
+                   Grid.RowSpan="2"
+                   Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}"
+                   Opacity="1"
+                   Canvas.ZIndex="100"/>
+        <ProgressBar Grid.RowSpan="2" 
+                     IsIndeterminate="True" 
+                     Height="50" 
+                     Width="Auto"
+                     Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}"
+                     Canvas.ZIndex="110"/>
+        
         <Pivot x:Name="MainHub" x:Uid="Hub" Grid.Row="1" Margin="0, -10, 0, 0">
             <Pivot.HeaderTemplate>
                 <DataTemplate>

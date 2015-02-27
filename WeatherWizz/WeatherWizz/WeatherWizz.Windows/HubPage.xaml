@@ -20,7 +20,6 @@
             <Setter Property="Margin" Value="20, 20, 20, 20"/>
         </Style>
         <localConverters:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
-        <localConverters:CounterBooleanToVisibilityConverter x:Key="CounterVisibilityConverter"/>
     </Page.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>

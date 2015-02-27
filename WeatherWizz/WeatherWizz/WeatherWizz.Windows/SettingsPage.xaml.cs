@@ -31,7 +31,7 @@ namespace WeatherWizz
         {
             this.InitializeComponent();
 
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.LandscapeFlipped | DisplayOrientations.Landscape;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -60,6 +60,7 @@ namespace WeatherWizz
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             this.DataContext = App.ApplicationViewModel;
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.LandscapeFlipped | DisplayOrientations.Landscape;
         }
 
         /// <summary>
