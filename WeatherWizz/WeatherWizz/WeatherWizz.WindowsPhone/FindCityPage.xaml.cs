@@ -1,38 +1,35 @@
-﻿using WeatherWizz.Common;
-using WeatherWizz.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Resources;
+using WeatherWizz.Common;
+using WeatherWizz.DataModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
+using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using WeatherWizz.DataModel;
 
-// The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
 namespace WeatherWizz
 {
     /// <summary>
-    /// A page that displays a grouped collection of items.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HubPage : Page
+    public sealed partial class FindCityPage : Page
     {
         private readonly NavigationHelper navigationHelper;
 
-        public HubPage()
+
+        public FindCityPage()
         {
             this.InitializeComponent();
 
@@ -42,18 +39,26 @@ namespace WeatherWizz
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+
+            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 
-        /// <summary>
-        /// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
-        /// </summary>
-        public NavigationHelper NavigationHelper
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
-            get
+            Frame frame = Window.Current.Content as Frame;
+            if (frame == null)
             {
-                return this.navigationHelper;
+                return;
+            }
+
+            if (frame.CanGoBack)
+            {
+                frame.GoBack();
+                e.Handled = true;
             }
         }
+
+        
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -68,12 +73,7 @@ namespace WeatherWizz
         /// session.  The state will be null the first time a page is visited.</param>
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var weatherViewModel = await WeatherDataServiceConsumer.GetWeatherInformation(App.ApplicationViewModel.SelectedLocation);
-            App.ApplicationViewModel.CurrentWeatherInfo = weatherViewModel;
-            //this.DefaultViewModel["ApplicationViewModel"] = App.ApplicationViewModel;
 
-            //this.DataContext = this.DefaultViewModel["ApplicationViewModel"];
-            this.DataContext = App.ApplicationViewModel;
         }
 
         /// <summary>
@@ -88,30 +88,15 @@ namespace WeatherWizz
         {
         }
 
-        #region NavigationHelper registration
-
         /// <summary>
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// <para>
-        /// Page specific logic should be placed in event handlers for the
-        /// <see cref="NavigationHelper.LoadState"/>
-        /// and <see cref="NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method
-        /// in addition to page state preserved during an earlier session.
-        /// </para>
+        /// Invoked when this page is about to be displayed in a Frame.
         /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.</param>
+        /// <param name="e">Event data that describes how this page was reached.
+        /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedTo(e);
+            this.DataContext = App.ApplicationViewModel;
+            //this.selectedItem = App.ApplicationViewModel.SelectedLocation;
         }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            this.navigationHelper.OnNavigatedFrom(e);
-        }
-        
-        #endregion
     }
 }

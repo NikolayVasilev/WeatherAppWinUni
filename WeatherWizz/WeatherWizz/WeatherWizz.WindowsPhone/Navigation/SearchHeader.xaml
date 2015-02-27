@@ -16,19 +16,14 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!--<TextBlock Text="{Binding CurrentCity}" 
-        FontSize="50" 
-        VerticalAlignment="Center" 
-        />-->
-
         <AppBarButton Click="BackButtonClick" 
                       Icon="Back"
                       VerticalAlignment="Center"
                       HorizontalAlignment="Left"
                       Grid.Column="0"/>
 
-        <AutoSuggestBox ItemsSource="{Binding AllCities}"
-                        Grid.Column="1"/>
+        <TextBox x:Name="SearchTextBox"
+                 Grid.Column="1"/>
         
         <AppBarButton Click="AddButtonClick" 
                       Icon="Add"

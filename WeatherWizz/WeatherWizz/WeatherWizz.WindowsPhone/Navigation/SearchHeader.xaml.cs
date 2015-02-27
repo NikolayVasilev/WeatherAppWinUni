@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Telerik.Core;
+using WeatherWizz.DataModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,14 +26,41 @@ namespace WeatherWizz.Navigation
         {
             this.InitializeComponent();
         }
+
         public void BackButtonClick(object sender, RoutedEventArgs e)
         {
+            Frame frame = Window.Current.Content as Frame;
+            if (frame == null)
+            {
+                return;
+            }
 
+            if (frame.CanGoBack)
+            {
+                frame.GoBack();
+            }
         }
 
         public void AddButtonClick(object sender, RoutedEventArgs e)
         {
+            string searchText = this.SearchTextBox.Text;
+            this.TryAddCity(searchText);
+        }
 
+        private async void TryAddCity(string cityName)
+        {
+            var cityInfo = await WeatherDataServiceConsumer.GetWeatherInformation(cityName);
+            if (cityInfo != null)
+            {
+                App.ApplicationViewModel.SavedCities.Insert(1, cityName);
+            }
+            else
+            {
+                MessageDialog dialog = new MessageDialog("Cannot locate city" , "Error");
+                await dialog.ShowAsync();
+            }
+
+            this.SearchTextBox.Text = string.Empty;
         }
     }
 }

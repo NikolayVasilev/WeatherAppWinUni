@@ -45,7 +45,6 @@ namespace WeatherWizz
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
 
-
             this.EnsureSettings();
         }
 
@@ -157,6 +156,19 @@ namespace WeatherWizz
 
             ApplicationViewModel = new ApplicationViewModel();
             ApplicationViewModel.SavedCities = new ObservableCollection<string>(ApplicationData.Current.LocalSettings.Values["SavedCities"] as string[]);
+#if WINDOWS_PHONE_APP
+            if (!ApplicationViewModel.SavedCities.Contains("CurrentLocation"))
+            {
+                ApplicationViewModel.SavedCities.Insert(0, "CurrentLocation");
+            }
+            else
+            {
+                ApplicationViewModel.SavedCities.Remove("CurrentLocation");
+                ApplicationViewModel.SavedCities.Insert(0, "CurrentLocation");
+            }
+#endif
+
+
             ApplicationViewModel.MeasurementUnits = ApplicationData.Current.LocalSettings.Values["Units"].Equals("Metric") ?
                 MeasurementUnits.Metric : MeasurementUnits.Imperial;
 
@@ -177,6 +189,15 @@ namespace WeatherWizz
         }
 #endif
 
+        private void SaveSettings()
+        {
+            ApplicationData.Current.LocalSettings.Values["SavedCities"] = ApplicationViewModel.SavedCities.ToArray<string>();
+
+            ApplicationData.Current.LocalSettings.Values["Units"] = ApplicationViewModel.MeasurementUnits.ToString();
+
+            ApplicationData.Current.LocalSettings.Values["SelectedLocation"] = ApplicationViewModel.SelectedLocation;
+        }
+
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
         /// without knowing whether the application will be terminated or resumed with the contents
@@ -184,6 +205,8 @@ namespace WeatherWizz
         /// </summary>
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            this.SaveSettings();
+
             var deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();

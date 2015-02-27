@@ -60,7 +60,15 @@ namespace WeatherWizz.DataModel
             var streamReader = new StreamReader(stream);
             string responseText = streamReader.ReadToEnd();
 
-            XDocument xDocDailyForecast = XDocument.Parse(responseText);
+            XDocument xDocDailyForecast = null;
+            try
+            {
+                xDocDailyForecast = XDocument.Parse(responseText);
+            }
+            catch
+            {
+                return null;
+            }
 
             var weatherInfo = new WeatherInfoViewModel();
 
@@ -88,7 +96,16 @@ namespace WeatherWizz.DataModel
             streamReader = new StreamReader(stream);
             responseText = streamReader.ReadToEnd();
 
-            XDocument xDocWeeklyForecast = XDocument.Parse(responseText);
+            XDocument xDocWeeklyForecast = null;
+
+            try
+            {
+                xDocWeeklyForecast = XDocument.Parse(responseText);
+            }
+            catch
+            {
+                return null;
+            }
 
             ParseWeeklyForecast(xDocWeeklyForecast, weatherInfo);
 

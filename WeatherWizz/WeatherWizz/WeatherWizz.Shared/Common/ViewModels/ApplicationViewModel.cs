@@ -53,6 +53,7 @@ namespace WeatherWizz.Common
                     this.currentWeatherInfo = value;
                     this.SelectedLocation = this.CurrentWeatherInfo.CityName;
                     OnPropertyChanged("CurrentWeatherInfo");
+                    OnPropertyChanged("SelectedLocation");
                 }
             }
         }
@@ -63,7 +64,7 @@ namespace WeatherWizz.Common
             {
                 await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, async () =>
                 {
-                    var weatherinfo = await WeatherDataServiceConsumer.GetWeatherInformation(this.SelectedLocation, true);
+                    var weatherinfo = await WeatherDataServiceConsumer.GetWeatherInformation(this.selectedLocation, true);
                     this.CurrentWeatherInfo = weatherinfo;
                 });
             }

@@ -18,17 +18,12 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="{Binding SelectedLocation}" 
-        FontSize="30" 
-        VerticalAlignment="Center" 
+                   FontSize="30" 
+                   FontWeight="ExtraBold"
+                   VerticalAlignment="Center" 
                    Margin="5,5,5,5"
-        />
-
-        <!--<ComboBox FontSize="50"
-                  Margin="20, 0, 0, 0"
-                  ItemsSource="{Binding SavedCities}"
-                  SelectedItem="{Binding SelectedLocation}"
-                  SelectionChanged="ComboBox_SelectionChanged"
-                  />-->
+                   
+                   />
 
         <AppBarButton Click="AddButtonClick" 
                       Icon="Add"
