@@ -15,7 +15,7 @@
     <Page.Resources>
         <localConverters:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
     </Page.Resources>
-    
+
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,14 +29,16 @@
                    Grid.RowSpan="2"
                    Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}"
                    Opacity="1"
-                   Canvas.ZIndex="100"/>
+                   Canvas.ZIndex="100"
+                   Margin="10"/>
         <ProgressBar Grid.RowSpan="2" 
                      IsIndeterminate="True" 
                      Height="50" 
                      Width="Auto"
                      Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}"
-                     Canvas.ZIndex="110"/>
-        
+                     Canvas.ZIndex="110"
+                     Margin="10"/>
+
         <Pivot x:Name="MainHub" x:Uid="Hub" Grid.Row="1" Margin="0, -10, 0, 0">
             <Pivot.HeaderTemplate>
                 <DataTemplate>
