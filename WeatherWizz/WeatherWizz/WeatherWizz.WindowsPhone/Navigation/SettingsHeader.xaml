@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="WeatherWizz.Navigation.SettingsHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WeatherWizz.Navigation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="70"
+    d:DesignWidth="400">
+    
+    <Grid Width="Auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <AppBarButton Click="BackButtonClick" 
+                      Icon="Back"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Left"
+                      Grid.Column="0"/>
+
+        <TextBlock Text="Settings" 
+                   FontSize="30" 
+                   FontWeight="Bold"
+                   VerticalAlignment="Center" 
+                   Margin="5,5,5,5"
+                   Grid.Column="1"/>
+
+    </Grid>
+</UserControl>

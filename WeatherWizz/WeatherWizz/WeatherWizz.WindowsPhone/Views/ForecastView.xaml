@@ -7,13 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:telerik="using:Telerik.UI.Xaml.Controls.Chart"
     xmlns:common="using:WeatherWizz.Common"
+    xmlns:commonConverters="using:WeatherWizz.Common.Converters"
     mc:Ignorable="d"
     d:DesignHeight="700"
     d:DesignWidth="400">
 
     <UserControl.Resources>
-        <common:DateTimeToDayConverter x:Key="TimeConverter"/>
-        <common:WeatherInfoDetailsToMinMaxTemperatureConverter x:Key="TemperatureConverter"/>
+        <commonConverters:DateTimeToDayConverter x:Key="TimeConverter"/>
+        <commonConverters:WeatherInfoDetailsToMinMaxTemperatureConverter x:Key="TemperatureConverter"/>
 
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>

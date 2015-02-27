@@ -21,7 +21,7 @@ namespace WeatherWizz.DataModel
 
         public static async Task<WeatherInfoViewModel> GetWeatherInformation(string locationName, bool forceRefresh = false)
         {
-            if ((DateTime.Now - lastUpdate).TotalMinutes < 60 && 
+            if ((DateTime.Now - lastUpdate).TotalMinutes < 15 && 
                 locationName == WeatherDataServiceConsumer.currentLocationName && 
                 currentWeatherInfo != null &&
                 !forceRefresh)
@@ -29,16 +29,16 @@ namespace WeatherWizz.DataModel
                 return currentWeatherInfo;
             }
 
-            //lat=35&lon=139
+            var units = App.ApplicationViewModel.MeasurementUnits.ToString().ToLower();
 
-            string dailyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast?q={0}&mode=xml", locationName);
-            string weeklyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&mode=xml&units=metric&cnt=7", locationName);
+            string dailyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast?q={0}&mode=xml&units={1}", locationName, units);
+            string weeklyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&mode=xml&units={1}&cnt=7", locationName, units);
 
 #if WINDOWS_PHONE_APP
             if (locationName != "CurrentLocation")
             {
-                dailyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast?q={0}&mode=xml", locationName);
-                weeklyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&mode=xml&units=metric&cnt=7", locationName);
+                dailyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast?q={0}&mode=xml&units={1}", locationName, units);
+                weeklyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&mode=xml&units={1}&cnt=7", locationName, units);
             }
             else
             {
@@ -47,8 +47,10 @@ namespace WeatherWizz.DataModel
 
                 Geoposition geoposition = await geolocator.GetGeopositionAsync();
 
-                dailyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast?lat={0}&lon={1}&mode=xml", geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude);
-                weeklyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast/daily?lat={0}&lon={1}&mode=xml&units=metric&cnt=7", geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude);
+                dailyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast?lat={0}&lon={1}&mode=xml&units={2}", 
+                    geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude, units);
+                weeklyForecastString = string.Format("http://api.openweathermap.org/data/2.5/forecast/daily?lat={0}&lon={1}&mode=xml&units={2}&cnt=7",
+                    geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude, units);
             }
 #endif
 
@@ -72,19 +74,7 @@ namespace WeatherWizz.DataModel
 
             var weatherInfo = new WeatherInfoViewModel();
 
-            weatherInfo.CityName = xDocDailyForecast.Root.Element("location").Element("name").Value;
-            weatherInfo.CountryName = xDocDailyForecast.Root.Element("location").Element("country").Value;
-
-            DateTime cleanDate;
-            string dateString = xDocDailyForecast.Root.Element("sun").Attribute("rise").Value;
-            DateTime.TryParseExact(dateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out cleanDate);
-
-            weatherInfo.Sunrise = cleanDate.ToLocalTime();
-
-            dateString = xDocDailyForecast.Root.Element("sun").Attribute("set").Value;
-            DateTime.TryParseExact(dateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out cleanDate);
-
-            weatherInfo.Sunset = cleanDate.ToLocalTime();
+            ParseBasicData(xDocDailyForecast, weatherInfo);
 
             ParseDaylyForecast(xDocDailyForecast, weatherInfo);
 
@@ -114,6 +104,23 @@ namespace WeatherWizz.DataModel
             currentWeatherInfo = weatherInfo;
 
             return weatherInfo;
+        }
+
+        private static void ParseBasicData(XDocument xDocDailyForecast, WeatherInfoViewModel weatherInfo)
+        {
+            weatherInfo.CityName = xDocDailyForecast.Root.Element("location").Element("name").Value;
+            weatherInfo.CountryName = xDocDailyForecast.Root.Element("location").Element("country").Value;
+
+            DateTime cleanDate;
+            string dateString = xDocDailyForecast.Root.Element("sun").Attribute("rise").Value;
+            DateTime.TryParseExact(dateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out cleanDate);
+
+            weatherInfo.Sunrise = cleanDate.ToLocalTime();
+
+            dateString = xDocDailyForecast.Root.Element("sun").Attribute("set").Value;
+            DateTime.TryParseExact(dateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out cleanDate);
+
+            weatherInfo.Sunset = cleanDate.ToLocalTime();
         }
 
         private static void ParseWeeklyForecast(XDocument xDoc, WeatherInfoViewModel weatherInfo)

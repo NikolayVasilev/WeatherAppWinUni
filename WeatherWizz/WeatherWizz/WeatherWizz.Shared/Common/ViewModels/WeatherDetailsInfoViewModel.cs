@@ -16,17 +16,6 @@ namespace WeatherWizz.Common
         public string WeatherState { get; set; }
         public double WindSpeed { get; set; }
         public string WindDirection { get; set; }
-
-        public string Winds
-        {
-            get
-            {
-                double windSpeedKph = this.WindSpeed * 1.609344;
-
-                return string.Format("{0}, {1:0.00} kph", this.WindDirection, windSpeedKph);
-            }
-        }
-
         public int WeatherStateCode { get; set; }
     }
 }

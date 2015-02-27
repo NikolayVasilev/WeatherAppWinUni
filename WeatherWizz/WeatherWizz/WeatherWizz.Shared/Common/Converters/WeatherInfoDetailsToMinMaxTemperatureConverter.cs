@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Windows.UI.Xaml.Data;
 
-namespace WeatherWizz.Common
+namespace WeatherWizz.Common.Converters
 {
     public class WeatherInfoDetailsToMinMaxTemperatureConverter : IValueConverter
     {

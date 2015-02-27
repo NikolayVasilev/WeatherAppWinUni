@@ -5,13 +5,11 @@ using Windows.UI.Xaml.Data;
 
 namespace WeatherWizz.Common.Converters
 {
-    public class DateTimeToDayConverter : IValueConverter
+    public class HumidityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var dateTime = (DateTime)value;
-
-            return dateTime.DayOfWeek.ToString();
+            return string.Format("{0} %", value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

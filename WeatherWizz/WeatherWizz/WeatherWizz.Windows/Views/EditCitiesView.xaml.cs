@@ -103,18 +103,11 @@ namespace WeatherWizz.Views
             }
         }
 
-        private void CheckBox_Loaded(object sender, RoutedEventArgs e)
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            var checkBox = (sender as CheckBox);
-            var item = (string)checkBox.DataContext;
+            var grid = sender as Grid;
 
-            if (item != null)
-            {
-                if (item.Equals("CurrentLocation"))
-                {
-                    checkBox.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                }
-            }
+            grid.Width = this.LineBorder.ActualWidth;
         }
     }
 }

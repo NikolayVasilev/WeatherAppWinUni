@@ -7,17 +7,68 @@ using WeatherWizz.DataModel;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System.Linq;
 
 namespace WeatherWizz.Common
 {
     public class ApplicationViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<string> SavedCities { get; set; }
+        public ObservableCollection<string> savedCities;
+        public ObservableCollection<string> SavedCities
+        {
+            get
+            {
+                return new ObservableCollection<string>(this.savedCities.Distinct());
+            }
+            set
+            {
+                if (this.savedCities != value)
+                {
+                    this.savedCities = value;
+                    OnPropertyChanged("SavedCities");
+                }
+            }
+        }
 
-        public MeasurementUnits MeasurementUnits { get; set; }
+        private bool isBusy;
 
-        private string selectedLocation; 
-        public string SelectedLocation 
+        public bool IsBusy
+        {
+            get 
+            { 
+                return isBusy; 
+            }
+            set 
+            {
+                if (isBusy != value)
+                {
+                    isBusy = value;
+                    OnPropertyChanged("IsBusy");
+                }
+            }
+        }
+
+
+        private MeasurementUnits measurementUnits;
+        public MeasurementUnits MeasurementUnits
+        {
+            get
+            {
+                return this.measurementUnits;
+            }
+            set
+            {
+                if (this.measurementUnits != value)
+                {
+                    this.measurementUnits = value;
+                    OnPropertyChanged("MeasurementUnits");
+                    RefreshWeatherInfo(true);
+                }
+            }
+        }
+
+        private string selectedLocation;
+        public string SelectedLocation
         {
             get
             {
@@ -25,7 +76,7 @@ namespace WeatherWizz.Common
             }
             set
             {
-                if(this.selectedLocation != value && value != null)
+                if (this.selectedLocation != value && value != null)
                 {
                     if (!this.SavedCities.Contains(value))
                     {
@@ -54,19 +105,29 @@ namespace WeatherWizz.Common
                     this.SelectedLocation = this.CurrentWeatherInfo.CityName;
                     OnPropertyChanged("CurrentWeatherInfo");
                     OnPropertyChanged("SelectedLocation");
+                    IsBusy = false;
                 }
             }
         }
 
-        private async void RefreshWeatherInfo()
+        private async void RefreshWeatherInfo(bool forceRefresh = false)
         {
             if (Window.Current.Dispatcher != null)
             {
                 await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, async () =>
                 {
-                    var weatherinfo = await WeatherDataServiceConsumer.GetWeatherInformation(this.selectedLocation, true);
+                    IsBusy = true;
+                    var weatherinfo = await WeatherDataServiceConsumer.GetWeatherInformation(this.selectedLocation, forceRefresh);
                     this.CurrentWeatherInfo = weatherinfo;
                 });
+            }
+        }
+
+        public List<MeasurementUnits> MeasurementUnitsCollection
+        {
+            get
+            {
+                return new List<MeasurementUnits>(Enum.GetValues(typeof(MeasurementUnits)).Cast<MeasurementUnits>());
             }
         }
 

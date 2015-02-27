@@ -10,7 +10,7 @@
     xmlns:commonConverters="using:WeatherWizz.Common.Converters"
     mc:Ignorable="d"
     d:DesignHeight="700"
-    d:DesignWidth="400">
+    d:DesignWidth="600">
 
     <UserControl.Resources>
         <commonConverters:DateTimeToHoursConverter x:Key="TimeConverter"/>
@@ -42,7 +42,8 @@
                 <TextBlock Text="{Binding CurrentTemperature, Converter={StaticResource TepmeratureConverter}}" 
                            Grid.Column="1"
                            Grid.RowSpan="2"
-                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Margin="0, 0, 30, 0"/>
                 
                 <Border Height="1" 
                         Width="Auto" 

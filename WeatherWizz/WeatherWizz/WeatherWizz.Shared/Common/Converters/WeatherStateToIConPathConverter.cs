@@ -4,7 +4,7 @@ using System.Text;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace WeatherWizz.Common
+namespace WeatherWizz.Common.Converters
 {
     public class WeatherStateToIConPathConverter : IValueConverter
     {

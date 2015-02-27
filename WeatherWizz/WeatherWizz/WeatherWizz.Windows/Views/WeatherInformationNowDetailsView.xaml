@@ -5,7 +5,7 @@
     xmlns:local="using:WeatherWizz.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:localConverters="using:WeatherWizz.Common.Converters"
+    xmlns:commonConverters="using:WeatherWizz.Common.Converters"
     mc:Ignorable="d"
     d:DesignHeight="250"
     d:DesignWidth="400">
@@ -14,15 +14,16 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="Silver"/>
+            <Setter Property="FontSize" Value="40"/>
         </Style>
 
         <Style x:Key="InformationTextBlockStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="40"/>
         </Style>
-        
-        <localConverters:WeatherDetailsToWindStringConverter x:Key="WindConverter"/>
-        <localConverters:HumidityConverter x:Key="HumidityConverter"/>
+        <commonConverters:WeatherDetailsToWindStringConverter x:Key="WindConverter"/>
+        <commonConverters:HumidityConverter x:Key="HumidityConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -39,47 +40,38 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Humidity:" 
-                   FontSize="20"/>
+                   />
         <TextBlock Text="{Binding CurrentWeatherState.Humidity, Converter={StaticResource HumidityConverter}}" 
-                   FontSize="20"
                    Grid.Column="1"
                    Style="{StaticResource InformationTextBlockStyle}"
                    />
 
         <TextBlock Text="Winds:" 
-                   FontSize="20"
                    Grid.Row="1"/>
         <TextBlock Text="{Binding CurrentWeatherState, Converter={StaticResource WindConverter}}" 
-                   FontSize="20"
                    Grid.Column="1"
                    Grid.Row="1"
                    Style="{StaticResource InformationTextBlockStyle}"/>
 
         <TextBlock Text="Sunrise:" 
-                   FontSize="20"
                    Grid.Row="2"/>
         <TextBlock Text="{Binding Sunrise.TimeOfDay}" 
-                   FontSize="20"
                    Grid.Column="1"
                    Grid.Row="2"
                    Style="{StaticResource InformationTextBlockStyle}"
                    />
 
         <TextBlock Text="Sunset:" 
-                   FontSize="20"
                    Grid.Row="3"/>
         <TextBlock Text="{Binding Sunset.TimeOfDay}" 
-                   FontSize="20"
                    Grid.Column="1"
                    Grid.Row="3"
                    Style="{StaticResource InformationTextBlockStyle}"
                    />
 
         <TextBlock Text="Pressure:" 
-                   FontSize="20"
                    Grid.Row="4"/>
         <TextBlock Text="{Binding CurrentWeatherState.Pressure}" 
-                   FontSize="20"
                    Grid.Column="1"
                    Grid.Row="4"
                    Style="{StaticResource InformationTextBlockStyle}"

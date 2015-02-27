@@ -1,15 +1,12 @@
 ﻿using WeatherWizz.Common;
-using WeatherWizz.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
-using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,27 +14,24 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using WeatherWizz.DataModel;
 
-// The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
+// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
 namespace WeatherWizz
 {
     /// <summary>
-    /// A page that displays a grouped collection of items.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HubPage : Page
+    public sealed partial class SettingsPage : Page
     {
-        private readonly NavigationHelper navigationHelper;
+        private NavigationHelper navigationHelper;
 
-        public HubPage()
+        public SettingsPage()
         {
             this.InitializeComponent();
 
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.None;
-            this.NavigationCacheMode = NavigationCacheMode.Required;
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -49,10 +43,7 @@ namespace WeatherWizz
         /// </summary>
         public NavigationHelper NavigationHelper
         {
-            get
-            {
-                return this.navigationHelper;
-            }
+            get { return this.navigationHelper; }
         }
 
         /// <summary>
@@ -63,17 +54,12 @@ namespace WeatherWizz
         /// The source of the event; typically <see cref="NavigationHelper"/>
         /// </param>
         /// <param name="e">Event data that provides both the navigation parameter passed to
-        /// <see cref="Frame.Navigate(Type, object)"/> when this page was initially requested and
+        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var weatherViewModel = await WeatherDataServiceConsumer.GetWeatherInformation(App.ApplicationViewModel.SelectedLocation);
-            App.ApplicationViewModel.CurrentWeatherInfo = weatherViewModel;
-
             this.DataContext = App.ApplicationViewModel;
-
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.None;
         }
 
         /// <summary>
@@ -94,14 +80,15 @@ namespace WeatherWizz
         /// The methods provided in this section are simply used to allow
         /// NavigationHelper to respond to the page's navigation methods.
         /// <para>
-        /// Page specific logic should be placed in event handlers for the
+        /// Page specific logic should be placed in event handlers for the  
         /// <see cref="NavigationHelper.LoadState"/>
         /// and <see cref="NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method
+        /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
         /// </para>
         /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.</param>
+        /// <param name="e">Provides data for navigation methods and event
+        /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
@@ -111,7 +98,7 @@ namespace WeatherWizz
         {
             this.navigationHelper.OnNavigatedFrom(e);
         }
-        
+
         #endregion
     }
 }

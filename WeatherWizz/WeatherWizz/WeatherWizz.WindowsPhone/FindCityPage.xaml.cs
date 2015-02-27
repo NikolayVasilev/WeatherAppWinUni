@@ -33,32 +33,13 @@ namespace WeatherWizz
         {
             this.InitializeComponent();
 
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.None;
-            this.NavigationCacheMode = NavigationCacheMode.Required;
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
-
-        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
-        {
-            Frame frame = Window.Current.Content as Frame;
-            if (frame == null)
-            {
-                return;
-            }
-
-            if (frame.CanGoBack)
-            {
-                frame.GoBack();
-                e.Handled = true;
-            }
-        }
-
-        
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -73,7 +54,8 @@ namespace WeatherWizz
         /// session.  The state will be null the first time a page is visited.</param>
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
+            this.DataContext = App.ApplicationViewModel;
         }
 
         /// <summary>
@@ -95,8 +77,12 @@ namespace WeatherWizz
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.DataContext = App.ApplicationViewModel;
-            //this.selectedItem = App.ApplicationViewModel.SelectedLocation;
+            this.navigationHelper.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            this.navigationHelper.OnNavigatedFrom(e);
         }
     }
 }

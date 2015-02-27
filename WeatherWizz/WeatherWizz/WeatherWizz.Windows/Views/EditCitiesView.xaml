@@ -5,6 +5,7 @@
     xmlns:local="using:WeatherWizz.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:localConverters="using:WeatherWizz.Common.Converters"
     mc:Ignorable="d"
     d:DesignHeight="700"
     d:DesignWidth="400">
@@ -12,27 +13,34 @@
     <UserControl.Resources>
         <Style TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,10,10,10"/>
         </Style>
 
+        <localConverters:ConverterInsurance x:Key="ConverterInsurance"/>
+
         <DataTemplate x:Key="ListViewItemTemplate">
-            <Grid Width="{Binding ActualWidth, ElementName=LineBorder}">
+            <Grid Loaded="Grid_Loaded">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.75*"/>
+                    <ColumnDefinition Width="0.10*"/>
+                    <ColumnDefinition Width="0.65*"/>
                     <ColumnDefinition Width="0.25*"/>
                 </Grid.ColumnDefinitions>
 
                 <CheckBox Checked="ItemCheckBoxChecked"
                           Unchecked="ItemCheckBoxUnchecked"
                           Margin="5, 5, 5, 5"
-                          FontSize="20"
                           IsChecked="False"
-                          Loaded="CheckBox_Loaded"
-                          Content="{Binding}"
                           />
+                <TextBlock Text="{Binding Converter={StaticResource ConverterInsurance}}"
+                           FontSize="40"
+                           Foreground="Silver"
+                           Margin="5, 5, 5, 5 "
+                           Grid.Column="1"/>
+                
                 <AppBarButton Icon="Favorite"
                               Click="SelectButtonClicked" 
                               HorizontalAlignment="Right"
-                              Grid.Column="1"/>
+                              Grid.Column="2"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -53,7 +61,10 @@
         <ListView x:Name="CitiesListView" 
                   HorizontalAlignment="Stretch"
                   ItemsSource="{Binding SavedCities}" 
-                  ItemTemplate="{StaticResource ListViewItemTemplate}" Grid.ColumnSpan="2">
+                  ItemTemplate="{StaticResource ListViewItemTemplate}" 
+                  Grid.ColumnSpan="2"
+                  Header="Cities:" 
+                  FontSize="40">
 
         </ListView>
 

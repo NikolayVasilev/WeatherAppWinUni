@@ -1,0 +1,30 @@
+﻿<UserControl
+    x:Class="WeatherWizz.Views.WeatherInformationNowScreenView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WeatherWizz.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:localViews="using:WeatherWizz.Views"
+    mc:Ignorable="d"
+    d:DesignHeight="700"
+    d:DesignWidth="600">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <localViews:WeatherInformationNowView x:Name="InformationView"
+                                              Grid.ColumnSpan="2"/>
+        <localViews:WeatherInformationNowDetailsView x:Name="DetailsView"
+                                                     Grid.Row="1"
+                                                     Grid.ColumnSpan="2"/>
+    </Grid>
+</UserControl>
